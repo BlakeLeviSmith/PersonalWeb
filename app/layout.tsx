@@ -5,14 +5,15 @@ import { fraunces, inter } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://blakeshorter.com"),
+  // Custom domain still to be decided — placeholder for absolute OG URLs.
+  metadataBase: new URL("https://blakesmith.com"),
   title: {
-    default: "Blake Shorter — Builder, Charlotte NC",
-    template: "%s — Blake Shorter",
+    default: "Blake Smith — Builder, Charlotte NC",
+    template: "%s — Blake Smith",
   },
   description: site.description,
   openGraph: {
-    title: "Blake Shorter",
+    title: "Blake Smith",
     description: site.description,
     type: "website",
     locale: "en_US",
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blake Shorter",
+    title: "Blake Smith",
     description: site.description,
     images: ["/og.svg"],
   },

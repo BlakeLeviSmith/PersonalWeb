@@ -44,10 +44,10 @@ export type Competition = {
 };
 
 export const site = {
-  name: "Blake Shorter",
+  name: "Blake Smith",
   role: "Builder",
   location: "Charlotte, NC",
-  email: "hello@blakeshorter.com",
+  email: "blake.le.smith@gmail.com",
   description:
     "High school junior building AI products for cities, homes, and small businesses.",
   updated: "May 2026",
@@ -63,7 +63,7 @@ export const navLinks: NavLink[] = [
 
 export const hero = {
   eyebrow: "Builder · Charlotte, NC",
-  name: "Blake Shorter",
+  name: "Blake Smith",
   subhead:
     "High school junior building AI products for cities, homes, and small businesses.",
 };
@@ -243,6 +243,8 @@ export const competitionsEyebrow = "Recent Competitions";
 // 4.8 — Footer
 export const footerLinks: NavLink[] = [
   { label: "GitHub", href: "https://github.com/BlakeLeviSmith" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/" },
-  { label: "Twitter / X", href: "https://x.com/" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/blake-smith-402b03352/",
+  },
 ];
