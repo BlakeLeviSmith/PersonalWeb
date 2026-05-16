@@ -81,19 +81,21 @@ export function Nav() {
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
             <Container>
-              <div className="flex h-16 items-center justify-between">
+              <div className="flex h-16 items-center">
                 <span className="font-serif text-[19px] text-ink">
                   {site.name}
                 </span>
-                <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  className="text-caption uppercase tracking-caption text-stone"
-                >
-                  Close
-                </button>
               </div>
             </Container>
+            {/* Pinned to the overlay's top-right corner so it never
+                collides with the name, regardless of name length. */}
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="absolute right-6 top-0 z-10 flex h-16 items-center text-caption uppercase tracking-caption text-stone"
+            >
+              Close
+            </button>
             <Container className="flex flex-1 flex-col justify-center">
               <ul className="flex flex-col gap-2">
                 {navLinks.map((link) => (
