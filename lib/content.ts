@@ -251,7 +251,7 @@ export const truckside = {
 export const research = {
   eyebrow: "Research Affiliation",
   title: "Duke University",
-  body: "Research affiliation at Duke under Daniel Egger, who leads the Master in Interdisciplinary Data Science program at the Social Science Research Institute. Final official position pending.",
+  body: "Research affiliation at Duke under Daniel Egger — Executive in Residence in the Engineering Graduate and Professional Programs at the Pratt School of Engineering, who helped organize Duke's Master in Interdisciplinary Data Science program.",
   logo: { src: "/images/duke-pratt.png", width: 320, height: 320 } as LogoAsset,
 };
 
