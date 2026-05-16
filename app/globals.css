@@ -102,6 +102,14 @@
   }
 }
 
+/* Hero topographic layers — visibility driven by the (removable) selector. */
+[data-topo-mode="topo"] .topo-streets {
+  display: none;
+}
+[data-topo-mode="streets"] .topo-contours {
+  display: none;
+}
+
 /* Honor the OS-level reduced-motion setting site-wide. */
 @media (prefers-reduced-motion: reduce) {
   :root {

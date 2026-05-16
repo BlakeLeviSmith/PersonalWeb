@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+  HERO PROTOTYPE · CHARLOTTE TOPO
+  Blake Shorter · Personal Site
+================================================================================
+
+  PURPOSE
+  This file is a working visual prototype for the hero section of the personal
+  site described in SITE_SPEC.md. It shows three candidate treatments for the
+  hero visual element so the design direction can be locked in before any real
+  production code is written.
+
+  HOW TO USE THIS FILE
+  Open it in any browser. The three tabs at the top toggle between three
+  approaches for the hero's right-side visual. The text, nav, and Charlotte
+  marker stay identical across all three so the only variable is the topo
+  treatment itself.
+
+  RECOMMENDED DIRECTION
+  Mode B (Streets only) is the recommended production target. Reasoning:
+    - The I-485 outer ring is immediately recognizable to anyone with Charlotte
+      familiarity, which is the target audience for the site
+    - Radial street structure tells the story of a city that grew around a
+      single uptown point, which is true of Charlotte and reinforces the
+      "founder rooted in place" narrative
+    - Reads more architectural and editorial than topographic contours, which
+      look generic in flat Piedmont terrain
+    - Easier to source authentic data (OpenStreetMap) than elevation
+  Mode A and Mode C are kept in this file as reference only.
+
+  PRODUCTION HANDOFF NOTES
+  This is a PROTOTYPE. None of the code in this file should ship to the real
+  site. What ships is:
+    1. A single static SVG asset at /public/images/charlotte-streets.svg, built
+       from real OpenStreetMap data (see "PRODUCTION ASSET PIPELINE" comment
+       block near the bottom of this file for the build steps)
+    2. The hero layout pattern shown here, rebuilt as a React component in the
+       Next.js project per SITE_SPEC.md section 4.2
+    3. The exact typography, color, and spacing tokens from SITE_SPEC.md
+       section 2 (NOT the values inlined in this file's CSS — those are
+       approximations using Google Fonts and system fallbacks)
+
+  WHAT TO COPY AND WHAT TO IGNORE
+  COPY: layout proportions, type hierarchy, eyebrow caption pattern, Charlotte
+    marker treatment with coordinates label, river hint placement, scroll
+    indicator at bottom
+  IGNORE: the JavaScript contour generation (replaced by real SVG asset), the
+    hand-drawn street paths (replaced by OSM-derived asset), the Google Fonts
+    link (production uses next/font), the tab UI (production has no toggle)
+
+  CROSS-REFERENCE
+  Full site spec lives in SITE_SPEC.md. This prototype satisfies sections 4.2
+  (Hero) and 6 (Placeholder Strategy) and adds detail for the right-side
+  visual that the spec leaves open.
+================================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Prototype · Charlotte Topo</title>
+
+<!--
+  PRODUCTION NOTE
+  Google Fonts is used here for convenience. The real site uses next/font with
+  self-hosted woff2 files to avoid CLS. Font choices match SITE_SPEC.md §2:
+  Fraunces for display and Inter for body.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /*
+    ============================================================================
+    COLOR TOKENS
+    These hex values mirror SITE_SPEC.md §2. In production they become Tailwind
+    theme tokens in tailwind.config.ts, not inline hex. The mapping:
+        #F4EFE7  →  bg.canvas      (page background)
+        #FBF9F4  →  bg.surface     (cards, hero inner frame)
+        #1F1B16  →  text.primary   (body, headlines, line work)
+        #6B6359  →  text.secondary (eyebrow captions, nav links)
+        #A39A8C  →  text.muted     (timestamps, marker subtitle)
+        #B89B7A  →  accent.tan     (single accent — used for river hint only)
+        #E4DCCF  →  border.sand    (hairline dividers, frame border)
+    Do NOT introduce new colors when porting this to React. The whole point of
+    the editorial tone is that the palette is short.
+    ============================================================================
+  */
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    color: #1F1B16;
+    background: #F4EFE7;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  /* Prototype wrapper. Production has no equivalent; the hero is full-width. */
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  /* Prototype label row. Not part of the real site. */
+  .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E4DCCF;
+  }
+  .label-row h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+  }
+  .label-row .meta {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6B6359;
+  }
+
+  /* Tab UI. Not part of production — exists only to compare approaches here. */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+  .tab {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #A39A8C;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 200ms, border-color 200ms;
+  }
+  .tab.active {
+    color: #1F1B16;
+    border-bottom-color: #1F1B16;
+  }
+
+  /*
+    HERO FRAME
+    In production this is the first viewport of the page, full-width with
+    px-6 md:px-12 lg:px-20 horizontal padding and a true 100vh height (not
+    aspect-ratio). The 16:10 aspect ratio is a prototype convenience so it
+    renders well at any browser size.
+  */
+  .hero {
+    background: #FBF9F4;
+    border: 1px solid #E4DCCF;
+    aspect-ratio: 16 / 10;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /*
+    NAV
+    Production version is fixed-position with backdrop-blur that activates
+    after 80px of scroll (see SITE_SPEC.md §4.1). Here it's absolute-positioned
+    inside the hero frame for prototype clarity.
+  */
+  .nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
+  .nav .brand {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 16px;
+    color: #1F1B16;
+  }
+  .nav .links {
+    display: flex;
+    gap: 28px;
+    text-transform: uppercase;
+    color: #6B6359;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+
+  /*
+    TOPO SVG CONTAINER
+    Positioned to the right ~58% of the hero. Pointer-events disabled so it
+    never interferes with text selection.
+    In production: replace the entire <svg> contents with a single <Image> or
+    inline <svg> referencing /public/images/charlotte-streets.svg.
+  */
+  .topo-svg {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 58%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /*
+    HERO TEXT BLOCK
+    Left-aligned, vertically centered, capped at 50% width on desktop so it
+    never collides with the topo visual. The eyebrow + display + subhead
+    pattern repeats throughout the site — see SITE_SPEC.md §2 typography.
+  */
+  .hero-text {
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 50%;
+    z-index: 5;
+  }
+  .eyebrow {
+    /* Eyebrow caption: 11px Inter, uppercase, 0.16em tracking, secondary color.
+       Appears above every section title on the site. */
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #6B6359;
+    margin-bottom: 28px;
+  }
+  .display {
+    /* Display headline: Fraunces 400 weight, clamped responsive size.
+       Production should use the variable font's opsz axis at 144 for the
+       largest sizes so the optical adjustment kicks in. */
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+  }
+  .subhead {
+    /* One-sentence positioning line. Copy is locked: avoids "high school" or
+       any age-revealing framing per Blake's direction. The "training for the
+       long arc" phrasing handles the age question implicitly. */
+    font-size: 15px;
+    line-height: 1.55;
+    max-width: 340px;
+    color: #1F1B16;
+  }
+
+  /*
+    FOOTER META BAR
+    Sits at the bottom of the hero. Left side is a scroll indicator with
+    section count (01 / 08 if there are 8 sections — adjust on build).
+    Right side is a date stamp, intentionally caption-styled to match the
+    editorial tone.
+  */
+  .footer-meta {
+    position: absolute;
+    bottom: 28px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #A39A8C;
+  }
+
+  /* Construction notes block. Prototype only; not part of the real site. */
+  .notes {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+  }
+  .note .num {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6B6359;
+    margin-bottom: 10px;
+  }
+  .note .body {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #1F1B16;
+  }
+
+  /*
+    RESPONSIVE
+    Real site mobile breakpoint is more involved. Here we just make sure the
+    prototype doesn't break on a phone preview. Production should follow the
+    mobile-first scale defined in SITE_SPEC.md §2.
+  */
+  @media (max-width: 720px) {
+    .notes { grid-template-columns: 1fr; }
+    .topo-svg { width: 70%; opacity: 0.5; }
+    .hero-text { max-width: 80%; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Prototype-only label. Remove on production port. -->
+  <div class="label-row">
+    <h1>Hero prototype · Charlotte topo</h1>
+    <div class="meta">May 2026 · Draft 01</div>
+  </div>
+
+  <!-- Prototype-only tab UI. Remove on production port. -->
+  <div class="tabs">
+    <button class="tab active" data-mode="contours">A · Contours only</button>
+    <button class="tab" data-mode="streets">B · Streets only</button>
+    <button class="tab" data-mode="combined">C · Combined</button>
+  </div>
+
+  <!--
+    ============================================================================
+    HERO COMPONENT
+    Everything inside .hero is the real hero structure. Port this layout 1:1
+    to a React component (e.g. components/Hero.tsx) using the design tokens
+    from SITE_SPEC.md.
+    ============================================================================
+  -->
+  <div class="hero">
+
+    <!-- Nav. In production this lives outside the hero as a fixed-top component. -->
+    <div class="nav">
+      <div class="brand">Blake Shorter</div>
+      <div class="links">
+        <span>Work</span>
+        <span>Research</span>
+        <span>Education</span>
+        <span>Contact</span>
+      </div>
+    </div>
+
+    <!--
+      TOPO VISUAL
+      Production target: replace this entire SVG with a single <img> or inline
+      <svg> referencing /public/images/charlotte-streets.svg, built from real
+      OpenStreetMap data per the asset pipeline below.
+
+      The marker layer (Charlotte dot, connector line, label text, river hint)
+      should be PART of that final SVG asset, not separate DOM elements. Build
+      it all together in Figma so positioning is locked.
+
+      Layers used here, in stacking order from back to front:
+        1. contour-layer — procedural elevation contours (Mode A only)
+        2. streets-layer — hand-drawn street approximation (Mode B and C)
+        3. markers      — Charlotte dot, label, coordinates, river curve
+    -->
+    <svg class="topo-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
+      <g id="contour-layer"></g>
+      <g id="streets-layer" style="display: none;"></g>
+
+      <!--
+        MARKERS LAYER
+        These elements should appear in the final production SVG asset exactly
+        as positioned here. Do not recreate them in the React component DOM —
+        keep them inside the single SVG file so the visual is one cohesive asset.
+
+        River hint: suggests the Catawba River on the west edge of the frame.
+        Painted in the only accent color used anywhere on the site (tan).
+        Single curve, low opacity, draws the eye without dominating.
+
+        Charlotte marker: small filled circle at the convergence of the radial
+        street pattern, with a thin connector line leading to a typeset label.
+        Coordinates below the label in muted color act as a date-stamp-style
+        editorial detail.
+      -->
+      <g id="markers">
+        <path d="M 80 50 Q 95 150, 60 250 T 80 460" stroke="#B89B7A" stroke-width="1.2" fill="none" opacity="0.5"/>
+        <circle cx="420" cy="250" r="3.5" fill="#1F1B16"/>
+        <line x1="424" y1="250" x2="500" y2="200" stroke="#1F1B16" stroke-width="0.5"/>
+        <text x="506" y="198" font-family="Inter, sans-serif" font-size="9" fill="#1F1B16" letter-spacing="2">CHARLOTTE</text>
+        <text x="506" y="212" font-family="Inter, sans-serif" font-size="8" fill="#A39A8C" letter-spacing="1">35.227°N · 80.843°W</text>
+      </g>
+    </svg>
+
+    <!--
+      HERO TEXT
+      Copy is locked. Do not modify without consulting Blake.
+        - Eyebrow: FOUNDER · CHARLOTTE, NC
+        - Display: Blake / Shorter (line break is intentional, not responsive)
+        - Subhead: one sentence
+      Animation hooks for react-bits (per SITE_SPEC.md §3):
+        - eyebrow: FadeContent, 700ms ease-out, delay 200ms
+        - display: SplitText or BlurText reveal on first paint
+        - subhead: FadeContent, 700ms ease-out, delay 600ms
+    -->
+    <div class="hero-text">
+      <div class="eyebrow">FOUNDER · CHARLOTTE, NC</div>
+      <div class="display">Blake<br>Shorter</div>
+      <div class="subhead">Founder building spatial AI products. Based in Charlotte, training for the long arc.</div>
+    </div>
+
+    <!--
+      FOOTER META
+      "01 / 08" is a section indicator. Update the denominator to match the
+      final section count on the live site. "May 2026" should be dynamically
+      generated from the current month/year on build.
+    -->
+    <div class="footer-meta">
+      <span>Scroll · 01 / 08</span>
+      <span>May 2026</span>
+    </div>
+  </div>
+
+  <!--
+    ============================================================================
+    CONSTRUCTION NOTES
+    Prototype-only block. Visible explanation of how the real asset gets built.
+    Remove on production port — these notes live in this file's comments and
+    in SITE_SPEC.md, not on the live site.
+    ============================================================================
+  -->
+  <div class="notes">
+    <div class="note">
+      <div class="num">01 · Source</div>
+      <div class="body">Pull Charlotte road data from OpenStreetMap via the Overpass API, filtered to motorway, trunk, and primary highway tags. One-time download, no live API in production.</div>
+    </div>
+    <div class="note">
+      <div class="num">02 · Render</div>
+      <div class="body">Run a Python script using osmnx and shapely to convert the OSM data to clean SVG paths. Output is a single SVG with one path per road class.</div>
+    </div>
+    <div class="note">
+      <div class="num">03 · Style</div>
+      <div class="body">Clean the SVG by hand in Figma, set stroke weights by road class, crop to frame, add the markers layer. Final asset is one static SVG, roughly 30 to 50KB.</div>
+    </div>
+  </div>
+</div>
+
+<!--
+  ============================================================================
+  PRODUCTION ASSET PIPELINE
+  ============================================================================
+  The static SVG that ships to the real site should be built once, by hand,
+  and checked into the repo. It is NOT generated at runtime. Steps:
+
+  1. INSTALL TOOLS (one-time)
+       pip install osmnx shapely
+
+  2. FETCH CHARLOTTE STREETS
+       Run this Python script. It downloads the road network for Mecklenburg
+       County, simplifies it, and exports as SVG paths.
+
+       import osmnx as ox
+       import matplotlib.pyplot as plt
+
+       G = ox.graph_from_place(
+           "Mecklenburg County, North Carolina, USA",
+           network_type="drive",
+           custom_filter='["highway"~"motorway|trunk|primary"]'
+       )
+       gdf = ox.graph_to_gdfs(G, nodes=False)
+
+       fig, ax = plt.subplots(figsize=(8, 5))
+       ax.set_axis_off()
+       gdf.plot(ax=ax, color="#1F1B16", linewidth=0.7)
+       fig.savefig("charlotte-streets-raw.svg", format="svg",
+                   bbox_inches="tight", pad_inches=0)
+
+  3. CLEAN IN FIGMA
+       - Open charlotte-streets-raw.svg in Figma
+       - Crop to a 16:10 frame matching the hero's right pane
+       - Promote interstate paths (I-485, I-77, I-85) to stroke-width 1.0
+       - Set primary roads to stroke-width 0.7
+       - Remove any orphan segments outside the frame
+       - Add the markers group: Charlotte dot, connector line, label text,
+         coordinates subtitle, river curve (use the exact coordinates from
+         the prototype's <g id="markers"> block)
+       - Set all strokes to stroke-linecap="round"
+
+  4. EXPORT AND OPTIMIZE
+       - Export as SVG from Figma
+       - Run through SVGO with default settings to strip metadata
+       - Target file size under 50KB
+       - Save to /public/images/charlotte-streets.svg
+
+  5. INTEGRATE
+       In the Hero React component, replace the prototype's procedural <svg>
+       with a single inline import:
+         import CharlotteSVG from "@/public/images/charlotte-streets.svg";
+       Or use Next.js Image with priority for the LCP:
+         <Image src="/images/charlotte-streets.svg" alt="" priority ... />
+       Inline is preferred because it allows CSS targeting of individual
+       paths if hover or scroll-linked animation is ever added.
+
+  6. PLACEHOLDER MODE
+       Until the real SVG asset exists, the Hero component should render the
+       shared <Placeholder> from SITE_SPEC.md §6 with:
+         filename="charlotte-streets.svg"
+         aspectRatio="16/10"
+         label="Charlotte street grid · uptown radial pattern"
+
+  ============================================================================
+  PROCEDURAL GENERATION (THIS FILE ONLY — DO NOT PORT)
+  ============================================================================
+  Everything in the <script> tag below is prototype-only code that generates
+  the visual on the fly so the design can be evaluated. None of it ships. The
+  real site loads a static SVG built per the pipeline above.
+
+  The contour generator uses a sum of Gaussian peaks as a fake heightfield
+  and runs marching squares on it to extract contour lines at fixed
+  thresholds. The math is real but the heightfield is invented.
+
+  The street paths are hand-drawn SVG approximations of Charlotte's actual
+  road structure. They look close but are not geographically accurate.
+-->
+<script>
+(function() {
+  var contourLayer = document.getElementById('contour-layer');
+  var streetsLayer = document.getElementById('streets-layer');
+
+  // Invented heightfield: two Gaussian peaks (uptown + south) and one valley
+  // toward the western edge (Catawba River direction). Plus a tiny ripple
+  // for visual texture so contours aren't perfectly smooth.
+  function heightAt(x, y) {
+    var a = Math.exp(-(Math.pow((x-420)/180, 2) + Math.pow((y-240)/180, 2))) * 1.0;
+    var b = Math.exp(-(Math.pow((x-540)/210, 2) + Math.pow((y-380)/230, 2))) * 0.85;
+    var c = -Math.exp(-(Math.pow((x-110)/260, 2) + Math.pow((y-260)/420, 2))) * 0.55;
+    var ripple = Math.sin(x * 0.011) * Math.cos(y * 0.012) * 0.07;
+    return a + b + c + ripple;
+  }
+
+  // Standard marching squares for line extraction at a given threshold.
+  // Returns an array of [point, point] line segments.
+  function extractContours(threshold, cols, rows, w, h) {
+    var cellW = w / cols, cellH = h / rows;
+    var grid = [];
+    for (var r = 0; r <= rows; r++) {
+      grid[r] = [];
+      for (var c = 0; c <= cols; c++) grid[r][c] = heightAt(c * cellW, r * cellH);
+    }
+    var segments = [];
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var tl = grid[r][c], tr = grid[r][c+1], br = grid[r+1][c+1], bl = grid[r+1][c];
+        var idx = 0;
+        if (tl > threshold) idx |= 1;
+        if (tr > threshold) idx |= 2;
+        if (br > threshold) idx |= 4;
+        if (bl > threshold) idx |= 8;
+        var x = c * cellW, y = r * cellH;
+        function interp(a, b, ax, ay, bx, by) {
+          var t = (threshold - a) / (b - a);
+          return [ax + (bx - ax) * t, ay + (by - ay) * t];
+        }
+        var top = function() { return interp(tl, tr, x, y, x + cellW, y); };
+        var right = function() { return interp(tr, br, x + cellW, y, x + cellW, y + cellH); };
+        var bottom = function() { return interp(bl, br, x, y + cellH, x + cellW, y + cellH); };
+        var left = function() { return interp(tl, bl, x, y, x, y + cellH); };
+        switch (idx) {
+          case 1: case 14: segments.push([top(), left()]); break;
+          case 2: case 13: segments.push([top(), right()]); break;
+          case 3: case 12: segments.push([left(), right()]); break;
+          case 4: case 11: segments.push([right(), bottom()]); break;
+          case 5: segments.push([top(), left()]); segments.push([right(), bottom()]); break;
+          case 6: case 9: segments.push([top(), bottom()]); break;
+          case 7: case 8: segments.push([left(), bottom()]); break;
+          case 10: segments.push([top(), right()]); segments.push([left(), bottom()]); break;
+        }
+      }
+    }
+    return segments;
+  }
+
+  // Generate 8 contour bands. Higher elevations render at higher opacity so
+  // the visual reads as topographically meaningful.
+  var thresholds = [-0.2, -0.05, 0.1, 0.25, 0.4, 0.55, 0.7, 0.82];
+  thresholds.forEach(function(t, i) {
+    var segs = extractContours(t, 70, 45, 800, 500);
+    var opacity = 0.32 + (i / thresholds.length) * 0.48;
+    segs.forEach(function(seg) {
+      var ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      ln.setAttribute('x1', seg[0][0]);
+      ln.setAttribute('y1', seg[0][1]);
+      ln.setAttribute('x2', seg[1][0]);
+      ln.setAttribute('y2', seg[1][1]);
+      ln.setAttribute('stroke', '#1F1B16');
+      ln.setAttribute('stroke-width', '0.7');
+      ln.setAttribute('opacity', opacity);
+      contourLayer.appendChild(ln);
+    });
+  });
+
+  // Hand-drawn street approximation. Each entry is [path-data, stroke-width, opacity].
+  // Road hierarchy:
+  //   Interstate (I-485 ring, I-77, I-85) — heavier weight, higher opacity
+  //   Major radials (Tryon, Trade, Independence, South, Providence, Beatties Ford, Wilkinson) — medium
+  //   Inner uptown grid — lightest
+  // The I-485 outer loop is drawn first so it sits behind everything else.
+  var streets = [
+    ['M 250 100 Q 600 80, 700 200 Q 740 320, 680 420 Q 540 480, 350 460 Q 180 420, 140 300 Q 130 180, 250 100 Z', 1.0, 0.75],
+    ['M 400 60 L 415 250 L 405 480', 0.8, 0.62],
+    ['M 180 130 L 420 250 L 720 380', 0.8, 0.62],
+    ['M 350 180 L 480 320', 0.55, 0.5],
+    ['M 470 200 L 360 300', 0.55, 0.5],
+    ['M 420 250 Q 540 280, 660 340', 0.55, 0.5],
+    ['M 420 250 L 480 460', 0.55, 0.5],
+    ['M 420 250 Q 540 300, 640 410', 0.55, 0.5],
+    ['M 420 250 Q 320 200, 220 140', 0.55, 0.5],
+    ['M 420 250 Q 280 280, 160 320', 0.55, 0.5],
+    ['M 380 220 L 460 290', 0.4, 0.4],
+    ['M 440 230 L 400 300', 0.4, 0.4],
+    ['M 460 250 L 380 250', 0.4, 0.4],
+    ['M 410 200 L 430 310', 0.4, 0.4],
+  ];
+  streets.forEach(function(s) {
+    var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', s[0]);
+    p.setAttribute('stroke', '#1F1B16');
+    p.setAttribute('stroke-width', s[1]);
+    p.setAttribute('opacity', s[2]);
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke-linecap', 'round');
+    streetsLayer.appendChild(p);
+  });
+
+  // Tab toggle. Prototype-only — production has no toggle, just one chosen mode.
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+      var mode = this.dataset.mode;
+      contourLayer.style.display = (mode === 'streets') ? 'none' : '';
+      streetsLayer.style.display = (mode === 'contours') ? 'none' : '';
+    });
+  });
+})();
+</script>
+</body>
+</html>
