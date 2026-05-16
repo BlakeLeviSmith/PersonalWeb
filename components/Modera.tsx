@@ -12,7 +12,7 @@ import { FadeContent } from "./motion/FadeContent";
  */
 export function Modera() {
   return (
-    <Section id="work">
+    <Section id="work" pb="pb-8 md:pb-12">
       <FadeContent>
         <Eyebrow>{modera.eyebrow}</Eyebrow>
         <div className="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-1">

@@ -19,7 +19,7 @@ import { TiltedCard } from "./motion/TiltedCard";
  */
 export function Canopy() {
   return (
-    <Section>
+    <Section pt="pt-8 md:pt-12">
       {/* --- Overview block --- */}
       <FadeContent>
         <Eyebrow>{canopy.eyebrow}</Eyebrow>

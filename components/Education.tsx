@@ -9,7 +9,7 @@ import { FadeContent } from "./motion/FadeContent";
  */
 export function Education() {
   return (
-    <Section id="education">
+    <Section id="education" pt="pt-8 md:pt-12">
       <FadeContent>
         <Eyebrow>{education.eyebrow}</Eyebrow>
         <h2 className="mt-6 font-serif text-h2 leading-[1.1] tracking-[-0.01em] text-ink md:text-h2-lg">

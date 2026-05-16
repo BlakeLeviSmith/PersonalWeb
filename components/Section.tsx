@@ -7,6 +7,10 @@ type SectionProps = {
   /** Hairline rule above the section content. */
   divider?: boolean;
   className?: string;
+  /** Top padding utility classes — override to tighten an inter-section gap. */
+  pt?: string;
+  /** Bottom padding utility classes — override to tighten an inter-section gap. */
+  pb?: string;
 };
 
 /** A long-scroll section: standard vertical rhythm and an optional top rule. */
@@ -15,9 +19,11 @@ export function Section({
   children,
   divider = true,
   className,
+  pt = "pt-14 md:pt-24",
+  pb = "pb-14 md:pb-24",
 }: SectionProps) {
   return (
-    <section id={id} className={`py-14 md:py-24 ${className ?? ""}`}>
+    <section id={id} className={`${pt} ${pb} ${className ?? ""}`}>
       <Container>
         {divider && <div className="mb-8 border-t border-sand md:mb-12" />}
         {children}
