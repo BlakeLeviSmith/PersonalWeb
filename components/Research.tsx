@@ -31,7 +31,7 @@ export function Research() {
               src={research.logo.src}
               width={research.logo.width}
               height={research.logo.height}
-              displayHeight={180}
+              displayHeight={240}
             />
           </div>
         </div>

@@ -294,6 +294,7 @@ export const ftc = {
 };
 
 export const competitions: Competition[] = [
+  { name: "FTC World Championship", detail: "April 2026" },
   { name: "TSA Nationals", detail: "Geospatial Technology · June 2026" },
   { name: "FBLA Business Plan", detail: "Top 10 States · March 2026" },
 ];
