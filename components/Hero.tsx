@@ -1,14 +1,13 @@
 import { hero, site } from "@/lib/content";
-import { Container } from "./Container";
 import { Eyebrow } from "./Eyebrow";
 import { CharlotteTopo } from "./hero/CharlotteTopo";
-import { HeroTopoStage } from "./hero/HeroTopoStage";
 import { ShinyText } from "./motion/ShinyText";
 import { SplitText } from "./motion/SplitText";
 
 /**
  * Hero — full first viewport. Left-aligned text over a Charlotte topographic
- * map (real OSM streets + SRTM contours) on the right.
+ * map (real OSM streets + SRTM contours) on the right. The text sits a little
+ * tighter to the left edge than the rest of the site, by intent.
  */
 export function Hero() {
   const [firstName, ...rest] = hero.name.split(" ");
@@ -19,11 +18,19 @@ export function Hero() {
       id="top"
       className="relative flex min-h-[100svh] flex-col overflow-hidden"
     >
-      <HeroTopoStage>
+      {/* Topo visual — right side, fading into the canvas toward the text. */}
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 w-full opacity-50 md:w-[64%] md:opacity-100"
+        style={{
+          maskImage: "linear-gradient(to right, transparent, #000 26%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, #000 26%)",
+        }}
+      >
         <CharlotteTopo className="h-full w-full" />
-      </HeroTopoStage>
+      </div>
 
-      <Container className="relative z-10 flex flex-1 flex-col justify-center pt-28 pb-28">
+      {/* Hero text. */}
+      <div className="relative z-10 mx-auto flex w-full max-w-content flex-1 flex-col justify-center px-6 pt-28 pb-28 md:px-8 lg:px-10">
         <div className="max-w-xl">
           <Eyebrow>{hero.eyebrow}</Eyebrow>
 
@@ -42,9 +49,10 @@ export function Hero() {
             {hero.subhead}
           </p>
         </div>
-      </Container>
+      </div>
 
-      <Container className="relative z-10 pb-9">
+      {/* Footer meta. */}
+      <div className="relative z-10 mx-auto w-full max-w-content px-6 pb-9 md:px-8 lg:px-10">
         <div className="flex items-end justify-between gap-6">
           <div className="flex items-center gap-3">
             <span aria-hidden className="scroll-cue" />
@@ -57,7 +65,7 @@ export function Hero() {
             className="text-caption uppercase tracking-caption"
           />
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

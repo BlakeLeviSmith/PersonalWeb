@@ -66,9 +66,23 @@ export function CharlotteTopo({ className }: CharlotteTopoProps) {
             key={`s${i}`}
             d={s.d}
             strokeWidth={s.w}
-            opacity={s.w > 1.5 ? 0.66 : 0.4}
+            opacity={s.w > 1.5 ? 0.5 : 0.34}
           />
         ))}
+      </g>
+
+      {/* Movement — pulses travel the interstates inward toward uptown. */}
+      <g className="topo-flow" fill="none" stroke="#1F1B16" strokeLinecap="round">
+        {streets
+          .filter((s) => s.w > 1.5)
+          .map((s, i) => (
+            <path
+              key={`f${i}`}
+              d={s.d}
+              strokeWidth={2.1}
+              style={{ animationDelay: `-${((i * 0.83) % 4.6).toFixed(2)}s` }}
+            />
+          ))}
       </g>
 
       {/* Uptown marker — dot, connector, label, coordinates. */}

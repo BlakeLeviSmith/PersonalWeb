@@ -102,12 +102,17 @@
   }
 }
 
-/* Hero topographic layers — visibility driven by the (removable) selector. */
-[data-topo-mode="topo"] .topo-streets {
-  display: none;
+/* Hero — sparse pulses flow the interstate paths inward toward uptown. */
+.topo-flow path {
+  stroke-dasharray: 4 70;
+  opacity: 0.85;
+  animation: street-flow 4.6s linear infinite;
 }
-[data-topo-mode="streets"] .topo-contours {
-  display: none;
+
+@keyframes street-flow {
+  to {
+    stroke-dashoffset: -74;
+  }
 }
 
 /* Honor the OS-level reduced-motion setting site-wide. */

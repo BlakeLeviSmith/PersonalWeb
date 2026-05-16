@@ -150,7 +150,7 @@ export const canopy = {
     src: "/images/CharlotteCanopyTool.png",
   } as ImageSlot,
   body: [
-    "A browser-based urban heat island simulator for Charlotte. Planners, neighborhood leaders, and nonprofits open the heatmap, draw an intervention like a new park or a roof change, and see the cooling delta in under a second. Same XGBoost model as the OpenUSD desktop platform from the state competition, now reachable from any phone in the field.",
+    "A browser-based urban heat island simulator for Charlotte. Planners, neighborhood leaders, and nonprofits open the heatmap, draw an intervention like a new park or a roof change, and see the cooling delta in under a second. Same XGBoost model as the OpenUSD desktop platform, now reachable from any phone in the field.",
     "Since launch the simulation has moved from prototype to active use. Six organizations across research, neighborhood advocacy, housing, and urban forestry are now using or evaluating the dataset.",
   ],
   features: [

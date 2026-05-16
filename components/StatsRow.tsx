@@ -13,10 +13,10 @@ export function StatsRow() {
     <Section id="glance">
       <Eyebrow>At a Glance</Eyebrow>
 
-      <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-12 md:mt-16 md:grid-cols-4 md:gap-x-8">
+      <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-12 md:mt-16 md:gap-x-12 md:gap-y-14 lg:grid-cols-4 lg:gap-x-14">
         {glanceStats.map((stat, i) => (
           <FadeContent key={stat.caption} delay={i * 0.08}>
-            <span className="nums block font-serif text-[58px] leading-[0.95] tracking-[-0.04em] text-ink md:text-[104px] lg:text-[140px]">
+            <span className="nums block font-serif text-[54px] leading-[0.95] tracking-[-0.04em] text-ink md:text-[88px] lg:text-[104px]">
               <CountUp value={stat.value} />
             </span>
             <span className="mt-4 block max-w-[22ch] text-caption uppercase tracking-caption text-stone">
