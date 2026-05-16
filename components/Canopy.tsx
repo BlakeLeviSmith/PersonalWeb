@@ -6,7 +6,7 @@ import {
   canopyTotals,
 } from "@/lib/content";
 import { Eyebrow } from "./Eyebrow";
-import { Placeholder } from "./Placeholder";
+import { LeadImage } from "./LeadImage";
 import { Section } from "./Section";
 import { CountUp } from "./motion/CountUp";
 import { FadeContent } from "./motion/FadeContent";
@@ -41,11 +41,7 @@ export function Canopy() {
         {/* Lead image — left on desktop. */}
         <FadeContent className="md:col-span-7 md:col-start-1 md:row-start-1">
           <TiltedCard>
-            <Placeholder
-              filename={canopy.leadImage.filename}
-              aspectRatio={canopy.leadImage.aspectRatio}
-              label={canopy.leadImage.label}
-            />
+            <LeadImage slot={canopy.leadImage} />
           </TiltedCard>
         </FadeContent>
 

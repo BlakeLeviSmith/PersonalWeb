@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { modera } from "@/lib/content";
 import { Eyebrow } from "./Eyebrow";
-import { LogoPill } from "./LogoPill";
-import { Placeholder } from "./Placeholder";
+import { LeadImage } from "./LeadImage";
+import { LogoMark } from "./LogoMark";
 import { Section } from "./Section";
 import { CountUp } from "./motion/CountUp";
 import { FadeContent } from "./motion/FadeContent";
@@ -35,11 +35,7 @@ export function Modera() {
         {/* Lead image — first on mobile, offset right on desktop. */}
         <FadeContent className="md:col-span-7 md:col-start-6 md:row-start-1">
           <TiltedCard>
-            <Placeholder
-              filename={modera.leadImage.filename}
-              aspectRatio={modera.leadImage.aspectRatio}
-              label={modera.leadImage.label}
-            />
+            <LeadImage slot={modera.leadImage} />
           </TiltedCard>
         </FadeContent>
 
@@ -84,7 +80,7 @@ export function Modera() {
                   {i > 0 && (
                     <span aria-hidden className="h-7 w-px bg-muted" />
                   )}
-                  <LogoPill name={program.name} />
+                  <LogoMark slot={program} />
                 </Fragment>
               ))}
             </div>

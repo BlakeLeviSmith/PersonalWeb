@@ -1,6 +1,6 @@
 import { truckside } from "@/lib/content";
 import { Eyebrow } from "./Eyebrow";
-import { Placeholder } from "./Placeholder";
+import { LeadImage } from "./LeadImage";
 import { Section } from "./Section";
 import { FadeContent } from "./motion/FadeContent";
 import { TiltedCard } from "./motion/TiltedCard";
@@ -32,11 +32,7 @@ export function Truckside() {
       <div className="mt-12 grid gap-10 md:mt-16 md:grid-cols-12 md:gap-x-12">
         <FadeContent className="md:col-span-7 md:col-start-6 md:row-start-1">
           <TiltedCard>
-            <Placeholder
-              filename={truckside.leadImage.filename}
-              aspectRatio={truckside.leadImage.aspectRatio}
-              label={truckside.leadImage.label}
-            />
+            <LeadImage slot={truckside.leadImage} />
           </TiltedCard>
         </FadeContent>
 

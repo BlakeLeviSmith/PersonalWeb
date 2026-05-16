@@ -1,6 +1,6 @@
 import { competitions, competitionsEyebrow, ftc } from "@/lib/content";
+import { DemoVideo } from "./DemoVideo";
 import { Eyebrow } from "./Eyebrow";
-import { Placeholder } from "./Placeholder";
 import { Section } from "./Section";
 import { FadeContent } from "./motion/FadeContent";
 
@@ -21,12 +21,7 @@ export function BuildingCompeting() {
 
       <div className="mt-12 grid gap-10 md:mt-14 md:grid-cols-12 md:gap-x-12">
         <FadeContent className="md:col-span-7">
-          <Placeholder
-            variant="video"
-            filename={ftc.video.filename}
-            aspectRatio={ftc.video.aspectRatio}
-            label={ftc.video.label}
-          />
+          <DemoVideo slot={ftc.video} />
         </FadeContent>
         <FadeContent delay={0.1} className="md:col-span-5 md:self-center">
           <p className="text-body text-ink">{ftc.body}</p>

@@ -18,10 +18,18 @@ export type ImageSlot = {
   filename: string;
   aspectRatio: string; // "16/10", "4/5", "16/9"
   label: string;
+  /** Real asset path under /public. When set, the image renders; otherwise
+   *  the styled placeholder box renders. This is the one-line swap-in. */
+  src?: string;
+  /** Poster frame path, used only by video slots. */
+  poster?: string;
 };
 
 export type LogoSlot = {
   name: string;
+  /** Real logo path under /public. When set, the logo renders; otherwise
+   *  the placeholder pill renders. */
+  src?: string;
 };
 
 export type Feature = {
