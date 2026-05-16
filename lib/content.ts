@@ -145,7 +145,7 @@ export const canopy = {
   href: "https://charlottecanopy.org",
   leadImage: {
     filename: "canopy-lead.jpg",
-    aspectRatio: "16/10",
+    aspectRatio: "16/9",
     label: "Heatmap with an intervention drawn on it",
     src: "/images/CharlotteCanopyTool.png",
   } as ImageSlot,
@@ -239,6 +239,7 @@ export const truckside = {
     filename: "truckside-lead.jpg",
     aspectRatio: "16/10",
     label: "Food truck at night, or the hardware stack",
+    src: "/images/truckside.jpg",
   } as ImageSlot,
   body: [
     "A voice ordering automation system for food trucks, running local inference on-truck with card-only payments and a transparent hardware-at-cost plus software subscription model. The first pilot is wrapping at a Charlotte truck this month, with paid non-family contracts targeted next.",

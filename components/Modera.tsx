@@ -54,18 +54,18 @@ export function Modera() {
           {/* Programs — a quieter credentials row. */}
           <div className="mt-9">
             <p className="eyebrow">{modera.programsCaption}</p>
-            <div className="mt-5 flex flex-wrap items-center gap-5">
+            <div className="mt-5 flex flex-wrap items-center gap-x-7 gap-y-4">
               {modera.programs.map((program, i) => (
                 <Fragment key={program.name}>
                   {i > 0 && (
-                    <span aria-hidden className="h-7 w-px bg-muted" />
+                    <span aria-hidden className="h-12 w-px bg-muted" />
                   )}
                   <LogoMark
                     name={program.name}
                     src={program.src}
                     width={program.width}
                     height={program.height}
-                    displayHeight={30}
+                    displayHeight={80}
                   />
                 </Fragment>
               ))}

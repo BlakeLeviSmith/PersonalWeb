@@ -18,7 +18,7 @@ export function Research() {
           src={research.logo.src}
           width={research.logo.width}
           height={research.logo.height}
-          displayHeight={60}
+          displayHeight={140}
           className="mt-7"
         />
         <h2 className="mt-6 font-serif text-h2 leading-[1.1] tracking-[-0.01em] text-ink md:text-h2-lg">

@@ -60,7 +60,7 @@ export function Canopy() {
       </div>
 
       {/* Three-up feature row. */}
-      <div className="mt-14 grid border-t border-sand md:mt-20 md:grid-cols-3">
+      <div className="mt-12 grid border-t border-sand md:mt-16 md:grid-cols-3">
         {canopy.features.map((feature, i) => (
           <FadeContent
             key={feature.caption}
@@ -76,7 +76,7 @@ export function Canopy() {
       </div>
 
       {/* --- Partners block --- */}
-      <div className="mt-28 md:mt-40">
+      <div className="mt-16 md:mt-24">
         <FadeContent>
           <Eyebrow>Launched Partners</Eyebrow>
         </FadeContent>
@@ -102,8 +102,9 @@ export function Canopy() {
                       src={partner.logo.src}
                       width={partner.logo.width}
                       height={partner.logo.height}
-                      displayHeight={26}
-                      className="mb-3"
+                      displayHeight={72}
+                      maxWidth={300}
+                      className="mb-4"
                     />
                   )}
                   <h3 className="font-serif text-h3 leading-[1.2] text-ink">
@@ -121,15 +122,15 @@ export function Canopy() {
 
       {/* Newest Launch callout. */}
       <FadeContent>
-        <div className="mt-16 border border-sand bg-surface p-8 md:mt-20 md:p-12">
+        <div className="mt-12 border border-sand bg-surface p-8 md:mt-16 md:p-12">
           <p className="eyebrow">{canopyNewestLaunch.eyebrow}</p>
           <LogoMark
             name={canopyNewestLaunch.title}
             src={canopyNewestLaunch.logo.src}
             width={canopyNewestLaunch.logo.width}
             height={canopyNewestLaunch.logo.height}
-            displayHeight={38}
-            className="mt-5"
+            displayHeight={104}
+            className="mt-6"
           />
           <h3 className="mt-4 font-serif text-h3-lg leading-[1.2] text-ink md:text-h2">
             {canopyNewestLaunch.title}
@@ -153,8 +154,8 @@ export function Canopy() {
             src={canopyInProgress.logo.src}
             width={canopyInProgress.logo.width}
             height={canopyInProgress.logo.height}
-            displayHeight={30}
-            className="mt-4"
+            displayHeight={84}
+            className="mt-5"
           />
           <p className="mt-4 max-w-measure text-body text-stone">
             {canopyInProgress.body}
@@ -163,7 +164,7 @@ export function Canopy() {
       </FadeContent>
 
       {/* Bottom-of-section totals row. */}
-      <div className="mt-16 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-sand pt-12 md:mt-24 md:grid-cols-4">
+      <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-sand pt-12 md:mt-16 md:grid-cols-4">
         {canopyTotals.map((total, i) => (
           <FadeContent key={total.caption} delay={i * 0.07}>
             <span className="nums block font-serif text-[44px] leading-none tracking-[-0.03em] text-ink md:text-[72px]">

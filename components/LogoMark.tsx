@@ -8,22 +8,26 @@ type LogoMarkProps = {
   /** Intrinsic pixel dimensions of the source file (for correct scaling). */
   width?: number;
   height?: number;
-  /** Rendered height in px; width scales to keep the logo's aspect ratio. */
+  /** Bounding-box height in px; the logo scales to fit, keeping its ratio. */
   displayHeight?: number;
+  /** Optional width cap so very wide lockups don't blow out their column. */
+  maxWidth?: number;
   className?: string;
 };
 
 /**
  * A program/partner logo. Renders a real monochrome lockup when a source is
- * given, the placeholder name pill otherwise. Logos are desaturated to the
- * warm grey tone so they sit inside the palette instead of fighting it.
+ * given, the placeholder name pill otherwise. The logo scales to fit inside a
+ * bounding box (height, and optional max width) with its aspect preserved, so
+ * a wide lockup and a square mark carry comparable visual weight.
  */
 export function LogoMark({
   name,
   src,
   width,
   height,
-  displayHeight = 28,
+  displayHeight = 64,
+  maxWidth,
   className,
 }: LogoMarkProps) {
   if (!src || !width || !height) {
@@ -36,8 +40,13 @@ export function LogoMark({
       alt={name}
       width={width}
       height={height}
-      style={{ height: displayHeight, width: "auto" }}
-      className={`select-none opacity-[0.62] [filter:grayscale(1)] ${
+      style={{
+        height: "auto",
+        width: "auto",
+        maxHeight: displayHeight,
+        maxWidth,
+      }}
+      className={`select-none object-contain opacity-[0.64] [filter:grayscale(1)] ${
         className ?? ""
       }`}
     />

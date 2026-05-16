@@ -17,9 +17,9 @@ export function Section({
   className,
 }: SectionProps) {
   return (
-    <section id={id} className={`py-24 md:py-40 ${className ?? ""}`}>
+    <section id={id} className={`py-14 md:py-24 ${className ?? ""}`}>
       <Container>
-        {divider && <div className="mb-14 border-t border-sand md:mb-20" />}
+        {divider && <div className="mb-8 border-t border-sand md:mb-12" />}
         {children}
       </Container>
     </section>

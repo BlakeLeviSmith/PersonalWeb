@@ -10,7 +10,7 @@ export function Footer() {
   return (
     <footer id="contact" className="bg-contrast text-canvas">
       <Container>
-        <div className="grid gap-12 py-20 md:grid-cols-3 md:gap-8 md:py-28">
+        <div className="grid gap-12 py-16 md:grid-cols-3 md:gap-8 md:py-20">
           {/* Left — name and the Magnet email link. */}
           <div>
             <p className="font-serif text-display leading-[1.05] tracking-[-0.03em]">
