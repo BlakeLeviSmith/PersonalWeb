@@ -102,16 +102,32 @@
   }
 }
 
-/* Hero — sparse pulses flow the interstate paths inward toward uptown. */
+/* Hero — interstate paths draw inward toward uptown, hold, fade, repeat. */
 .topo-flow path {
-  stroke-dasharray: 4 70;
-  opacity: 0.85;
-  animation: street-flow 4.6s linear infinite;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+  animation: street-draw 5.5s ease-in-out infinite;
 }
 
-@keyframes street-flow {
-  to {
-    stroke-dashoffset: -74;
+@keyframes street-draw {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.85;
+  }
+  58% {
+    stroke-dashoffset: 0;
+  }
+  82% {
+    stroke-dashoffset: 0;
+    opacity: 0.85;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
   }
 }
 

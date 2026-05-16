@@ -45,13 +45,14 @@ export function Nav() {
             {site.name}
           </a>
 
+          {/* Liquid-glass bubble so the links read over the hero map. */}
           <nav aria-label="Primary" className="hidden md:block">
-            <ul className="flex items-center gap-9">
+            <ul className="flex items-center gap-0.5 rounded-full border border-sand bg-surface/75 p-1 backdrop-blur-md">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-[13px] tracking-[0.02em] text-stone transition-colors duration-200 hover:text-ink"
+                    className="block rounded-full px-3.5 py-1.5 text-[12.5px] tracking-[0.02em] text-stone transition-colors duration-200 hover:bg-canvas hover:text-ink"
                   >
                     {link.label}
                   </a>
@@ -63,7 +64,7 @@ export function Nav() {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="text-caption uppercase tracking-caption text-stone md:hidden"
+            className="rounded-full border border-sand bg-surface/75 px-4 py-2 text-caption uppercase tracking-caption text-stone backdrop-blur-md md:hidden"
           >
             Menu
           </button>

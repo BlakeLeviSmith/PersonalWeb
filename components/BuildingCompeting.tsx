@@ -4,6 +4,7 @@ import { LeadImage } from "./LeadImage";
 import { Section } from "./Section";
 import { StatStrip } from "./StatStrip";
 import { FadeContent } from "./motion/FadeContent";
+import { TiltedCard } from "./motion/TiltedCard";
 
 /**
  * Building & Competing — the FTC scoring tool (with measured results) plus a
@@ -22,7 +23,9 @@ export function BuildingCompeting() {
 
       <div className="mt-12 grid gap-10 md:mt-14 md:grid-cols-12 md:gap-x-12">
         <FadeContent className="md:col-span-7">
-          <LeadImage slot={ftc.image} />
+          <TiltedCard>
+            <LeadImage slot={ftc.image} />
+          </TiltedCard>
         </FadeContent>
         <FadeContent delay={0.1} className="md:col-span-5">
           <div className="space-y-5">

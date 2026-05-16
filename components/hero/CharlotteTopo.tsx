@@ -71,7 +71,7 @@ export function CharlotteTopo({ className }: CharlotteTopoProps) {
         ))}
       </g>
 
-      {/* Movement — pulses travel the interstates inward toward uptown. */}
+      {/* Movement — interstates draw inward toward uptown, then fade out. */}
       <g className="topo-flow" fill="none" stroke="#1F1B16" strokeLinecap="round">
         {streets
           .filter((s) => s.w > 1.5)
@@ -79,8 +79,9 @@ export function CharlotteTopo({ className }: CharlotteTopoProps) {
             <path
               key={`f${i}`}
               d={s.d}
+              pathLength={100}
               strokeWidth={2.1}
-              style={{ animationDelay: `-${((i * 0.83) % 4.6).toFixed(2)}s` }}
+              style={{ animationDelay: `-${((i * 1.7) % 5.5).toFixed(2)}s` }}
             />
           ))}
       </g>
