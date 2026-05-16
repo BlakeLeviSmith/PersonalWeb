@@ -4,7 +4,7 @@ import { animate, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 type CountUpProps = {
-  /** Display string, e.g. "400", "50K+", "30,000+", "6 neighborhoods". */
+  /** Display string, e.g. "400", "50K+", "30,000+", "0.79", "93%". */
   value: string;
   className?: string;
   duration?: number;
@@ -12,31 +12,39 @@ type CountUpProps = {
 
 /** Split a display string into its leading number and trailing suffix. */
 function parse(value: string) {
-  const match = value.match(/^([\d,]+)(.*)$/);
+  const match = value.match(/^([\d.,]+)(.*)$/);
   if (!match) {
-    return { target: 0, suffix: value, separated: false };
+    return { target: 0, suffix: value, separated: false, decimals: 0 };
   }
+  const raw = match[1].replace(/,/g, "");
   const separated = match[1].includes(",");
-  const target = parseInt(match[1].replace(/,/g, ""), 10);
-  return { target, suffix: match[2], separated };
+  const dot = raw.indexOf(".");
+  const decimals = dot === -1 ? 0 : raw.length - dot - 1;
+  return {
+    target: parseFloat(raw) || 0,
+    suffix: match[2],
+    separated,
+    decimals,
+  };
 }
 
-function format(n: number, separated: boolean) {
-  if (separated || n >= 1000) {
-    return n.toLocaleString("en-US");
-  }
-  return String(n);
+function format(n: number, separated: boolean, decimals: number) {
+  return n.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+    useGrouping: separated || n >= 1000,
+  });
 }
 
 /**
- * Animates an oversized number from zero when it scrolls into view. Honors
- * reduced motion by snapping straight to the final value.
+ * Animates a number from zero when it scrolls into view. Handles thousands
+ * separators and decimals. Honors reduced motion by snapping to the value.
  */
 export function CountUp({ value, className, duration = 1.7 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-12%" });
   const reduce = useReducedMotion();
-  const { target, suffix, separated } = parse(value);
+  const { target, suffix, separated, decimals } = parse(value);
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
@@ -55,7 +63,7 @@ export function CountUp({ value, className, duration = 1.7 }: CountUpProps) {
 
   return (
     <span ref={ref} className={className}>
-      {format(Math.round(display), separated)}
+      {format(display, separated, decimals)}
       {suffix}
     </span>
   );

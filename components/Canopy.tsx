@@ -7,6 +7,7 @@ import {
 } from "@/lib/content";
 import { Eyebrow } from "./Eyebrow";
 import { LeadImage } from "./LeadImage";
+import { LogoMark } from "./LogoMark";
 import { Section } from "./Section";
 import { CountUp } from "./motion/CountUp";
 import { FadeContent } from "./motion/FadeContent";
@@ -83,7 +84,7 @@ export function Canopy() {
         <div className="mt-10 md:mt-12">
           {canopyPartners.map((partner) => (
             <FadeContent key={partner.name}>
-              <article className="grid gap-x-8 gap-y-3 border-t border-sand py-8 md:grid-cols-12 md:py-10">
+              <article className="grid gap-x-8 gap-y-4 border-t border-sand py-8 md:grid-cols-12 md:py-10">
                 <div className="md:col-span-3">
                   <span className="nums block font-serif text-[44px] leading-none tracking-[-0.03em] text-ink md:text-[60px]">
                     <CountUp value={partner.figure} />
@@ -94,9 +95,21 @@ export function Canopy() {
                     </span>
                   )}
                 </div>
-                <h3 className="font-serif text-h3 leading-[1.2] text-ink md:col-span-4">
-                  {partner.name}
-                </h3>
+                <div className="md:col-span-4">
+                  {partner.logo && (
+                    <LogoMark
+                      name={partner.name}
+                      src={partner.logo.src}
+                      width={partner.logo.width}
+                      height={partner.logo.height}
+                      displayHeight={26}
+                      className="mb-3"
+                    />
+                  )}
+                  <h3 className="font-serif text-h3 leading-[1.2] text-ink">
+                    {partner.name}
+                  </h3>
+                </div>
                 <p className="text-body text-stone md:col-span-5">
                   {partner.role}
                 </p>
@@ -110,6 +123,14 @@ export function Canopy() {
       <FadeContent>
         <div className="mt-16 border border-sand bg-surface p-8 md:mt-20 md:p-12">
           <p className="eyebrow">{canopyNewestLaunch.eyebrow}</p>
+          <LogoMark
+            name={canopyNewestLaunch.title}
+            src={canopyNewestLaunch.logo.src}
+            width={canopyNewestLaunch.logo.width}
+            height={canopyNewestLaunch.logo.height}
+            displayHeight={38}
+            className="mt-5"
+          />
           <h3 className="mt-4 font-serif text-h3-lg leading-[1.2] text-ink md:text-h2">
             {canopyNewestLaunch.title}
             <span className="text-muted">
@@ -127,7 +148,15 @@ export function Canopy() {
       <FadeContent>
         <div className="mt-10 md:mt-12 md:pl-12">
           <p className="eyebrow">{canopyInProgress.eyebrow}</p>
-          <p className="mt-3 max-w-measure text-body text-stone">
+          <LogoMark
+            name="UNC Charlotte"
+            src={canopyInProgress.logo.src}
+            width={canopyInProgress.logo.width}
+            height={canopyInProgress.logo.height}
+            displayHeight={30}
+            className="mt-4"
+          />
+          <p className="mt-4 max-w-measure text-body text-stone">
             {canopyInProgress.body}
           </p>
         </div>

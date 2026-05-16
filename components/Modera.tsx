@@ -1,12 +1,11 @@
 import { Fragment } from "react";
 import { modera } from "@/lib/content";
 import { Eyebrow } from "./Eyebrow";
-import { LeadImage } from "./LeadImage";
 import { LogoMark } from "./LogoMark";
 import { Section } from "./Section";
-import { CountUp } from "./motion/CountUp";
+import { StatStrip } from "./StatStrip";
+import { YouTubeFacade } from "./YouTubeFacade";
 import { FadeContent } from "./motion/FadeContent";
-import { TiltedCard } from "./motion/TiltedCard";
 
 /**
  * Modera — the priority commercial project, leading the Work section.
@@ -32,14 +31,12 @@ export function Modera() {
       </FadeContent>
 
       <div className="mt-12 grid gap-10 md:mt-16 md:grid-cols-12 md:gap-x-12">
-        {/* Lead image — first on mobile, offset right on desktop. */}
+        {/* Demo video — first on mobile, offset right on desktop. */}
         <FadeContent className="md:col-span-7 md:col-start-6 md:row-start-1">
-          <TiltedCard>
-            <LeadImage slot={modera.leadImage} />
-          </TiltedCard>
+          <YouTubeFacade video={modera.video} />
         </FadeContent>
 
-        {/* Text column — left on desktop, centered against the image. */}
+        {/* Text column — left on desktop, centered against the video. */}
         <FadeContent
           delay={0.1}
           className="md:col-span-5 md:col-start-1 md:row-start-1 md:self-center"
@@ -52,35 +49,24 @@ export function Modera() {
             ))}
           </div>
 
-          {/* Stat strip — three numbers with hairline dividers. */}
-          <div className="mt-10 flex border-t border-sand pt-8">
-            {modera.stats.map((stat, i) => (
-              <div
-                key={stat.label}
-                className={`flex-1 ${
-                  i > 0 ? "border-l border-sand pl-5" : ""
-                }`}
-              >
-                <span className="nums block font-serif text-[40px] leading-none tracking-[-0.03em] text-ink">
-                  <CountUp value={stat.value} />
-                </span>
-                <span className="mt-2.5 block text-caption uppercase tracking-caption text-stone">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </div>
+          <StatStrip stats={modera.stats} className="mt-10" />
 
           {/* Programs — a quieter credentials row. */}
           <div className="mt-9">
             <p className="eyebrow">{modera.programsCaption}</p>
-            <div className="mt-4 flex flex-wrap items-center gap-4">
+            <div className="mt-5 flex flex-wrap items-center gap-5">
               {modera.programs.map((program, i) => (
                 <Fragment key={program.name}>
                   {i > 0 && (
                     <span aria-hidden className="h-7 w-px bg-muted" />
                   )}
-                  <LogoMark slot={program} />
+                  <LogoMark
+                    name={program.name}
+                    src={program.src}
+                    width={program.width}
+                    height={program.height}
+                    displayHeight={30}
+                  />
                 </Fragment>
               ))}
             </div>

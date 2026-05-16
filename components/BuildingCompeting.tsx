@@ -1,12 +1,13 @@
 import { competitions, competitionsEyebrow, ftc } from "@/lib/content";
-import { DemoVideo } from "./DemoVideo";
 import { Eyebrow } from "./Eyebrow";
+import { LeadImage } from "./LeadImage";
 import { Section } from "./Section";
+import { StatStrip } from "./StatStrip";
 import { FadeContent } from "./motion/FadeContent";
 
 /**
- * Building & Competing — the FTC scoring tool (with a demo video) plus a short
- * competitions list. Lighter weight than the Work section.
+ * Building & Competing — the FTC scoring tool (with measured results) plus a
+ * short competitions list. Lighter weight than the Work section.
  */
 export function BuildingCompeting() {
   return (
@@ -21,10 +22,17 @@ export function BuildingCompeting() {
 
       <div className="mt-12 grid gap-10 md:mt-14 md:grid-cols-12 md:gap-x-12">
         <FadeContent className="md:col-span-7">
-          <DemoVideo slot={ftc.video} />
+          <LeadImage slot={ftc.image} />
         </FadeContent>
-        <FadeContent delay={0.1} className="md:col-span-5 md:self-center">
-          <p className="text-body text-ink">{ftc.body}</p>
+        <FadeContent delay={0.1} className="md:col-span-5">
+          <div className="space-y-5">
+            {ftc.body.map((para) => (
+              <p key={para} className="text-body text-ink">
+                {para}
+              </p>
+            ))}
+          </div>
+          <StatStrip stats={ftc.stats} className="mt-9" />
         </FadeContent>
       </div>
 

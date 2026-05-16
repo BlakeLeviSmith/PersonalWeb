@@ -21,15 +21,29 @@ export type ImageSlot = {
   /** Real asset path under /public. When set, the image renders; otherwise
    *  the styled placeholder box renders. This is the one-line swap-in. */
   src?: string;
-  /** Poster frame path, used only by video slots. */
-  poster?: string;
+};
+
+/** A real logo file with its intrinsic pixel dimensions (for no-CLS layout). */
+export type LogoAsset = {
+  src: string;
+  width: number;
+  height: number;
 };
 
 export type LogoSlot = {
   name: string;
-  /** Real logo path under /public. When set, the logo renders; otherwise
-   *  the placeholder pill renders. */
+  /** When set, the logo renders; otherwise the placeholder pill renders. */
   src?: string;
+  width?: number;
+  height?: number;
+};
+
+export type VideoEmbed = {
+  youtubeId: string;
+  /** Poster frame shown before play — no third-party script loads until then. */
+  poster: string;
+  aspectRatio: string;
+  label: string;
 };
 
 export type Feature = {
@@ -44,6 +58,7 @@ export type Partner = {
   unit?: string;
   name: string;
   role: string;
+  logo?: LogoAsset;
 };
 
 export type Competition = {
@@ -90,11 +105,12 @@ export const modera = {
   title: "Modera",
   url: "modera.studio",
   href: "https://modera.studio",
-  leadImage: {
-    filename: "modera-lead.jpg",
-    aspectRatio: "16/10",
-    label: "iPhone scan-to-design flow",
-  } as ImageSlot,
+  video: {
+    youtubeId: "gAZqadjXbCc",
+    poster: "/images/ModeraRenderedRoom.png",
+    aspectRatio: "16/9",
+    label: "Modera scan-to-design demo",
+  } as VideoEmbed,
   body: [
     "An AI 3D interior design platform for homeowners. Scan a room with an iPhone, prompt a style, and generate furniture-accurate design variations in seconds. Built on Apple's native renderer, with a unit economics target that lets the consumer flow stay close to free.",
     "Currently in closed beta with the next cohort of homeowners moving from waitlist to TestFlight.",
@@ -106,8 +122,18 @@ export const modera = {
   ] as ProjectStat[],
   programsCaption: "Backed by",
   programs: [
-    { name: "Google Cloud for Startups" },
-    { name: "NVIDIA Inception" },
+    {
+      name: "Google Cloud for Startups",
+      src: "/images/google-cloud.png",
+      width: 400,
+      height: 200,
+    },
+    {
+      name: "NVIDIA Inception",
+      src: "/images/nvidia-inception.png",
+      width: 400,
+      height: 200,
+    },
   ] as LogoSlot[],
 };
 
@@ -121,6 +147,7 @@ export const canopy = {
     filename: "canopy-lead.jpg",
     aspectRatio: "16/10",
     label: "Heatmap with an intervention drawn on it",
+    src: "/images/CharlotteCanopyTool.png",
   } as ImageSlot,
   body: [
     "A browser-based urban heat island simulator for Charlotte. Planners, neighborhood leaders, and nonprofits open the heatmap, draw an intervention like a new park or a roof change, and see the cooling delta in under a second. Same XGBoost model as the OpenUSD desktop platform from the state competition, now reachable from any phone in the field.",
@@ -149,23 +176,27 @@ export const canopyPartners: Partner[] = [
     figure: "30,000+",
     name: "Camino",
     role: "Health, education, and community center programs serving Charlotte's Latino population, using the model to map heat exposure for clinic outreach zones.",
+    logo: { src: "/images/logo_camino.webp", width: 2997, height: 544 },
   },
   {
     figure: "350+",
     unit: "homes",
     name: "McCrorey Heights Neighborhood Association",
     role: "Historically Black middle-class enclave founded in 1912, on the National Register of Historic Places since 2017, using heat data to prioritize tree-canopy advocacy with the city.",
+    logo: { src: "/images/logo_mccrorey.webp", width: 656, height: 457 },
   },
   {
     figure: "6",
     unit: "neighborhoods",
     name: "West Blvd Neighborhood Coalition",
     role: "Coalition representing Reid Park, Wilmore, Wesley Heights, and adjacent neighborhoods along the West Blvd corridor, identifying intervention priorities.",
+    logo: { src: "/images/logo_west_blvd.png", width: 400, height: 200 },
   },
   {
     figure: "5,000+",
     name: "Roof Above",
     role: "Charlotte's largest homelessness nonprofit, formed from the Urban Ministry Center and Men's Shelter merger in 2020, layering heat data on outreach routes to flag dangerous days.",
+    logo: { src: "/images/logo_roof_above.png", width: 400, height: 200 },
   },
 ];
 
@@ -174,11 +205,21 @@ export const canopyNewestLaunch = {
   title: "TreesCharlotte",
   detail: "50,000+ trees planted since 2013",
   body: "Partnership confirmed with the Director of Programs, the Urban Forest Educator, and the Community Engagement Manager. TreesCharlotte uses the platform to data-optimize where they direct planting and to power urban forestry education programming, pairing the existing 50K+ planted trees with model-prioritized future-planting blocks.",
+  logo: {
+    src: "/images/logo_trees_charlotte.png",
+    width: 792,
+    height: 396,
+  } as LogoAsset,
 };
 
 export const canopyInProgress = {
   eyebrow: "In Progress · Referral",
   body: "UNC Charlotte professor-led citizen heat-mapping campaign, referred by TreesCharlotte's Director of Programs, currently evaluating their volunteer-collected ground-truth dataset alongside the ECOSTRESS-derived predictions for cross-validation.",
+  logo: {
+    src: "/images/logo_uncc.webp",
+    width: 1920,
+    height: 1080,
+  } as LogoAsset,
 };
 
 export const canopyTotals: GlanceStat[] = [
@@ -210,6 +251,7 @@ export const research = {
   eyebrow: "Research Affiliation",
   title: "Duke University",
   body: "Research affiliation at Duke under Daniel Egger, who leads the Master in Interdisciplinary Data Science program at the Social Science Research Institute. Final official position pending.",
+  logo: { src: "/images/duke-pratt.png", width: 320, height: 320 } as LogoAsset,
 };
 
 // 4.6 — Education
@@ -233,12 +275,21 @@ export const education = {
 export const ftc = {
   eyebrow: "First Tech Challenge · Worlds Competitor",
   title: "FTC scoring assistance tool",
-  video: {
-    filename: "ftc-demo.mp4",
+  image: {
+    filename: "ftc-lead.jpg",
     aspectRatio: "16/9",
-    label: "FTC scoring tool demo",
+    label: "Overhead view of an FTC DECODE field",
+    src: "/images/FTCScoringTool.png",
   } as ImageSlot,
-  body: "A passive computer vision referee aid for FTC matches, running on an ESP32 camera with 99%+ ball detection accuracy in test conditions. Currently in discussion with the event coordinator for the CPE event, not yet an official deployment.",
+  body: [
+    "A real-time computer vision system that watches an FTC DECODE field through a single overhead camera and scores each alliance's ramp automatically — counting classified versus overflow ball crossings as they happen.",
+    "When the system fires it is almost always correct. The open work is recall: cluster handling on the gate and overflow lines. The metrics below are measured across four labeled match clips.",
+  ],
+  stats: [
+    { value: "93%", label: "event precision" },
+    { value: "68%", label: "event recall" },
+    { value: "0.79", label: "F1 score" },
+  ] as ProjectStat[],
 };
 
 export const competitions: Competition[] = [
