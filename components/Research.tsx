@@ -24,7 +24,9 @@ export function Research() {
             </p>
           </div>
 
-          {/* Duke mark — centered in the open space, right. */}
+          {/* Duke mark — centered in the open space, right. Doubled visually
+              via transform, so its layout box (and the section size) is
+              unchanged; it simply overflows into the surrounding whitespace. */}
           <div className="flex md:col-span-4 md:col-start-9 md:row-start-1 md:items-center md:justify-center">
             <LogoMark
               name={research.title}
@@ -32,6 +34,7 @@ export function Research() {
               width={research.logo.width}
               height={research.logo.height}
               displayHeight={280}
+              className="origin-center md:scale-[2]"
             />
           </div>
         </div>

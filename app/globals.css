@@ -17,6 +17,9 @@
     font-family: theme("fontFamily.sans");
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Contain any element that visually overflows past the viewport edge
+       (e.g. the scaled-up Duke mark) without a horizontal scrollbar. */
+    overflow-x: hidden;
   }
 
   /* Anchor scroll offset so the fixed nav never covers section tops. */
