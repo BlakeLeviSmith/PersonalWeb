@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    background-color: theme("colors.canvas");
+    color: theme("colors.ink");
+  }
+
+  body {
+    font-family: theme("fontFamily.sans");
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Anchor scroll offset so the fixed nav never covers section tops. */
+  section[id] {
+    scroll-margin-top: 88px;
+  }
+
+  ::selection {
+    background-color: theme("colors.tan");
+    color: theme("colors.surface");
+  }
+}
+
+@layer components {
+  /* Eyebrow caption pattern — uppercase, letter-spaced, secondary color. */
+  .eyebrow {
+    @apply text-caption uppercase text-stone;
+  }
+
+  /* Placeholder diagonal hairline stripe — the signal that a box is a slot. */
+  .placeholder-stripes {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 23px,
+      rgba(228, 220, 207, 0.4) 23px,
+      rgba(228, 220, 207, 0.4) 24px
+    );
+  }
+
+  /* In-prose numerics sit on tabular figures. */
+  .nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ShinyText — a single tan glint travels across letter-spaced caption text. */
+  .shiny-text {
+    background: linear-gradient(
+      110deg,
+      theme("colors.stone") 42%,
+      theme("colors.tan") 50%,
+      theme("colors.stone") 58%
+    );
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 7s linear infinite;
+  }
+
+  @keyframes shine {
+    to {
+      background-position: -240% 0;
+    }
+  }
+
+  /* Hero below-the-fold cue — a segment travels down a hairline track. */
+  .scroll-cue {
+    position: relative;
+    height: 46px;
+    width: 1px;
+    overflow: hidden;
+    background-color: theme("colors.sand");
+  }
+
+  .scroll-cue::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: -55%;
+    height: 55%;
+    background-color: theme("colors.ink");
+    animation: scroll-cue 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  @keyframes scroll-cue {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(320%);
+    }
+  }
+}
+
+/* Honor the OS-level reduced-motion setting site-wide. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
