@@ -88,7 +88,7 @@ export const hero = {
   eyebrow: "Builder · Charlotte, NC",
   name: "Blake Smith",
   subhead:
-    "High school junior building AI products for cities, homes, and small businesses.",
+    "Building spatial AI for the homes, cities, and small businesses around us.",
 };
 
 // 4.3 — At a Glance. The visual anchor of the page.
