@@ -11,7 +11,7 @@ import { TiltedCard } from "./motion/TiltedCard";
  */
 export function Truckside() {
   return (
-    <Section>
+    <Section pb="pb-8 md:pb-12">
       <FadeContent>
         <Eyebrow>{truckside.eyebrow}</Eyebrow>
         <div className="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-1">

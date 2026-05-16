@@ -10,7 +10,7 @@ import { FadeContent } from "./motion/FadeContent";
  */
 export function Research() {
   return (
-    <Section id="research" pb="pb-8 md:pb-12">
+    <Section id="research" pt="pt-8 md:pt-12" pb="pb-8 md:pb-12">
       <FadeContent>
         <div className="grid gap-10 md:grid-cols-12 md:gap-x-12">
           {/* Prose — narrow measure, left. */}
